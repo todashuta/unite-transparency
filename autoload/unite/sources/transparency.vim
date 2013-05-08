@@ -8,16 +8,16 @@ let s:unite_source = {
       \ }
 
 function! s:unite_source.hooks.on_init(args, context)
-  if exists('&transparency')
-    let s:beforetransparency = &transparency
-  endif
+  let s:initial_transparency = &transparency
 endfunction
 
 function! s:unite_source.hooks.on_close(args, context)
-  if s:beforetransparency == &transparency
+  if s:initial_transparency == &transparency
+    unlet s:initial_transparency
     return
   endif
-  execute 'set transparency='.s:beforetransparency
+  let &transparency = s:initial_transparency
+  unlet s:initial_transparency
 endfunction
 
 let s:unite_source.action_table['*'].preview = {
@@ -38,7 +38,8 @@ function! s:unite_source.gather_candidates(args, context)
 endfunction
 
 function! unite#sources#transparency#define()
-  return s:unite_source
+  return (has('gui_running') && exists('&transparency')) ?
+        \ s:unite_source : []
 endfunction
 
 let &cpo = s:save_cpo
