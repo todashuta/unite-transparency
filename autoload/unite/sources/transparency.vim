@@ -47,7 +47,7 @@ function! s:unite_source.gather_candidates(args, context)
 endfunction
 
 function! unite#sources#transparency#define()
-  return (has('gui_running') && exists('&transparency')) ?
+  return (has('gui_running') && exists('+transparency')) ?
         \ s:unite_source : []
 endfunction
 
