@@ -30,12 +30,12 @@ function! s:unite_source.action_table['*'].preview.func(candidate)
 endfunction
 
 function! s:unite_source.gather_candidates(args, context)
-  if has('gui_macvim')
+  if unite#util#is_mac()
     let list = range(0, 100, 4)
-  elseif has('win32') || has('win64')
+  elseif unite#util#is_windows()
     let list = range(255, 105, -6)
   else
-    echoerr 'Your environment does not support the current version of unite-transparency.'
+    call unite#util#print_error('Your environment does not support the current version of unite-transparency.')
     finish
   endif
 
